@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./
+      - uses: marceloprado/has-changed-path@v1
         id: changed-config
         with:
           paths: config/
