@@ -18,6 +18,7 @@ env:
   IMAGE_TAG: ga-${{ github.sha }} 
 
 jobs:
+  # Build pods imgs
   build:
     runs-on: ubuntu-latest
     environment: prod-secrets
