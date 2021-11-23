@@ -22,5 +22,6 @@ jobs:
       - name: Test new integration
         run: |
           cd config/
+          mvn compile
           mvn test
 
