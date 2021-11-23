@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI - Allow new features
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request events but only for the dev branch
+  pull_request:
+    branches: [ dev ]
+    
+jobs:
+  config-test:
+    runs-on: ubuntu-latest
+    environment: dev-secrets
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./
+        id: changed-config
+        with:
+          paths: config/
+
+      - name: Test new integration
+        if: steps.changed-config.outputs.changed == 'true'
+        run: |
+          cd config/
+          mvn compile jib:build \
+              -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
+          mvn test
+
