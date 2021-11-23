@@ -37,6 +37,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<properties>
+			<maven.test.skip>true</maven.test.skip>
+		</properties>
 	</build>
 	
 </project>
