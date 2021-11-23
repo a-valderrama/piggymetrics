@@ -2,6 +2,8 @@ name: Accept production updates
 
 # Controls when the workflow will run
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -33,23 +35,6 @@ jobs:
           cd config
           mvn compile jib:build \
               -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }} 
-          cd ../registry
-          mvn compile jib:build 
-          cd ../gateway
-          mvn compile jib:build
-          cd ../auth-service
-          mvn compile jib:build 
-          
-          cd ../account-service
-          mvn compile jib:build \
-              -Djib.container.environment=ACCOUNT_SERVICE_PASSWORD=${{ secrets.ACCOUNT_SERVICE_PASSWORD }} 
-               
-          cd ../statistics-service
-          mvn compile jib:build \
-              -Djib.container.environment=STATISTICS_SERVICE_PASSWORD=${{ secrets.STATISTICS_SERVICE_PASSWORD }} 
-          cd ../notification-service
-          mvn compile jib:build \
-              -Djib.container.environment=NOTIFICATION_SERVICE_PASSWORD=${{ secrets.NOTIFICATION_SERVICE_PASSWORD }} 
           echo 'Build complete'
       
     
