@@ -1,12 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI - Allow new features
+name: CI - Allow new features from config
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on pull request events but only for the dev branch
-  pull_request:
-    branches: [ dev ]
+  push:
+    paths:
+      - 'config/'
     
 jobs:
   config-test:
@@ -14,15 +14,9 @@ jobs:
     environment: dev-secrets
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: marceloprado/has-changed-path@v1
-        id: changed-config
-        with:
-          paths: config/
+      - uses: actions/checkout@v
 
       - name: Test new integration
-        if: steps.changed-config.outputs.changed == 'true'
         run: |
           cd config/
           mvn compile jib:build \
