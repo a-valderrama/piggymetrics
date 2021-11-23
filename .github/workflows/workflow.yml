@@ -4,7 +4,7 @@ name: CI - Allow new features from config
 
 # Controls when the workflow will run
 on:
-  push:
+  pull_request:
     paths:
       - 'config/'
     
