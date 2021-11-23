@@ -16,7 +16,7 @@ on:
       - 'auth-service/**'
     
 jobs:
-  config-test:
+  auth-test:
     runs-on: ubuntu-latest
     environment: dev-secrets
 

@@ -16,7 +16,7 @@ on:
       - 'statistics-service/**'
     
 jobs:
-  config-test:
+  statistics-test:
     runs-on: ubuntu-latest
     environment: dev-secrets
 

@@ -16,7 +16,7 @@ on:
       - 'account-service/**'
     
 jobs:
-  config-test:
+  account-test:
     runs-on: ubuntu-latest
     environment: dev-secrets
 
