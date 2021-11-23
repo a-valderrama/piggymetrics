@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>config</name>
-	<description>Configuration Server Process</description>
+	<description>Configuration Server</description>
 
 	<parent>
 		<groupId>com.piggymetrics</groupId>
