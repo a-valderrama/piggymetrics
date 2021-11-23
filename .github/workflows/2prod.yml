@@ -1,0 +1,72 @@
+name: Accept production updates
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: [ master ]
+
+env:
+  CONFIG_PORT: '8888'
+  REGISTRY_PORT: '8761'
+  GATEWAY_PORT: '4000'
+  ACCOUNT_SERVICE_PORT: '6000'
+  AUTH_SERVICE_PORT: '5000'
+  STATISTICS_SERVICE_PORT: '7000'
+  NOTIFICATION_SERVICE_PORT: '8000'
+  IMAGE_TAG: ga-${{ github.sha }} 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: prod-secrets
+    steps:
+      - uses: actions/checkout@master
+    
+      - run: |
+         az login -u ${{ secrets.AZURE_USER }} -p ${{ secrets.AZURE_PWD }}
+         export CONTAINER_REGISTRY=${{ secrets.AZURE_CONTAINER_REGISTRY }}
+         export IMAGE_TAG=${{ env.IMAGE_TAG }}
+         echo 'Install ACR AAD credential helper and login'
+          curl -L https://aka.ms/acr/installaad/bash | /bin/bash
+          az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY }}
+          echo 'Start Build'
+          cd config
+          mvn compile jib:build \
+              -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }} 
+          cd ../registry
+          mvn compile jib:build 
+          cd ../gateway
+          mvn compile jib:build
+          cd ../auth-service
+          mvn compile jib:build 
+          
+          cd ../account-service
+          mvn compile jib:build \
+              -Djib.container.environment=ACCOUNT_SERVICE_PASSWORD=${{ secrets.ACCOUNT_SERVICE_PASSWORD }} 
+               
+          cd ../statistics-service
+          mvn compile jib:build \
+              -Djib.container.environment=STATISTICS_SERVICE_PASSWORD=${{ secrets.STATISTICS_SERVICE_PASSWORD }} 
+          cd ../notification-service
+          mvn compile jib:build \
+              -Djib.container.environment=NOTIFICATION_SERVICE_PASSWORD=${{ secrets.NOTIFICATION_SERVICE_PASSWORD }} 
+          echo 'Build complete'
+      
+    
+  deploy-to-aks:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: terraform-testing
+    steps:
+    - uses: actions/checkout@master
+
+    # Stablish connection with AKS
+    - run: |
+        az login -u ${{ secrets.AZURE_USER }} -p ${{ secrets.AZURE_PWD }}
+        az aks get-credentials --name piggymetrics-aks1 --resource-group alejandro-valderrama --admin
+    
+    # Deploy app using helm
+    - name: Prep helm chart
+      run: |
+          helm upgrade initialdeployment buildachart-piggy
+          echo 'Deploy complete'
