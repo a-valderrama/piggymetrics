@@ -36,14 +36,14 @@ jobs:
           cd config
           mvn compile jib:build \
               -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
-               
+
           echo 'Build complete'
       
     
   deploy-to-aks:
     needs: build
     runs-on: ubuntu-latest
-    environment: terraform-testing
+    environment: prod-secrets
     steps:
     - uses: actions/checkout@master
 
