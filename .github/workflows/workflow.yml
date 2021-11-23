@@ -5,8 +5,6 @@ name: CI - Allow new features from config
 # Controls when the workflow will run
 on:
   push:
-    paths:
-      - 'config/'
     branches:
       - dev
   pull_request:
