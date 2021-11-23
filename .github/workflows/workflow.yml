@@ -22,7 +22,5 @@ jobs:
       - name: Test new integration
         run: |
           cd config/
-          mvn compile jib:build \
-              -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
           mvn test
 
