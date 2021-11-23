@@ -1,9 +1,13 @@
-# Pipeline to integrate new changes to dev branch
+# This is a basic workflow to help you get started with Actions
 
-name: Allow new features 
+name: CI - Allow new features
 
-on: pull_request
-
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request events but only for the dev branch
+  pull_request:
+    branches: [ dev ]
+    
 jobs:
   config-test:
     runs-on: ubuntu-latest
@@ -12,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: marceloprado/has-changed-path@v1
+      - uses: ./
         id: changed-config
         with:
           paths: config/
@@ -20,7 +24,7 @@ jobs:
       - name: Test new integration
         if: steps.changed-config.outputs.changed == 'true'
         run: |
-          cd config/  
+          cd config/
           mvn compile jib:build \
               -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
-          mvn test 
+          mvn test
