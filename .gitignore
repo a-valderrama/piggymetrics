@@ -14,12 +14,3 @@ target/
 **/*.project
 **/*.classpath
 **/*.settings
-
-# CI - Testing
-.github/workflows/CI-account.yml
-.github/workflows/CI-auth.yml
-.github/workflows/CI-config.yml
-.github/workflows/CI-gateway.yml
-.github/workflows/CI-notification.yml
-.github/workflows/CI-registry.yml
-.github/workflows/CI-statistics.yml
