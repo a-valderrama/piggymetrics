@@ -16,7 +16,7 @@ jobs:
             token: ${{ secrets.VaultToken }}
             caCertificate: ${{ secrets.VAULTCA }}
             secrets: |
-                secret/kv/test test | TEST ;
+                kv/test test | TEST ;
       
         - run: |
             echo '${{ steps.secrets.outputs.TEST }}'
