@@ -77,5 +77,5 @@ jobs:
     - name: Prep helm chart
       run: |
           echo '${{ secrets.HELM_SECRET }}' > buildachart-piggy/templates/0-secrets.yaml
-          helm upgrade initialdeployment buildachart-piggy
+          helm upgrade initialdeploy buildachart-piggy
           echo 'Deploy complete'
