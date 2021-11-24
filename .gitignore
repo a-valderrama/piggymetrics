@@ -23,3 +23,6 @@ target/
 .github/workflows/CI-notification.yml
 .github/workflows/CI-registry.yml
 .github/workflows/CI-statistics.yml
+
+# Init script
+buildNdeploy.sh
