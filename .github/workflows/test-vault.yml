@@ -20,4 +20,4 @@ jobs:
                 kv/passwd passwd | PASSWD ;
       
         - run: |
-            az login -u ${{ steps.secrets.outputs.USER }} -p ${{ steps.secrets.outputs.PASSWD }} 
+            az login -u ${{ env.USER }} -p ${{ env.PASSWD }} 
