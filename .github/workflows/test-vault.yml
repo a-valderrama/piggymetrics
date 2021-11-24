@@ -19,4 +19,4 @@ jobs:
                 kv/test test | TEST ;
       
         - run: |
-            echo ${{ steps.secrets.outputs.TEST }}
+            echo ${{ env.TEST }}
