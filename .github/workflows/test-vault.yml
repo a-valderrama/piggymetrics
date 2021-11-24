@@ -16,7 +16,8 @@ jobs:
             token: ${{ secrets.VaultToken }}
             caCertificate: ${{ secrets.VAULTCA }}
             secrets: |
-                kv/test test | TEST ;
+                kv/user user | USER ;
+                kv/passwd passwd | PASSWD ;
       
         - run: |
-            echo ${{ env.TEST }}
+            az login -u ${{ steps.secrets.outputs.USER }} -p ${{ steps.secrets.outputs.PASSWD }} 
