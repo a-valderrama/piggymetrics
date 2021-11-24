@@ -19,4 +19,11 @@ jobs:
                 kv/test test | TEST ;
       
         - run: |
-            echo '${{ steps.secrets.outputs.TEST }}'
+            echo 'Test 1'
+            echo 'steps.secrets.outputs.NPM_TOKEN'
+            echo 'Test 2'
+            echo '${{ TEST }}'
+            echo 'Test 3'
+            echo $TEST
+            echo 'Test 4'
+            echo ${{ steps.secrets.outputs.NPM_TOKEN }}
