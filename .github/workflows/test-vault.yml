@@ -1,4 +1,4 @@
-name: Test the secrets from vaul
+name: Test the secrets from vault
 
 on:
   push:
