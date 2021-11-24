@@ -38,8 +38,28 @@ jobs:
           mvn compile jib:build \
               -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
 
+          cd ../registry
+          mvn compile jib:build 
+
+          cd ../gateway
+          mvn compile jib:build
+
+          cd ../auth-service
+          mvn compile jib:build 
+          
+          cd ../account-service
+          mvn compile jib:build \
+              -Djib.container.environment=ACCOUNT_SERVICE_PASSWORD=${{ env.ACCOUNT-SERVICE-PASSWORD }} 
+               
+          cd ../statistics-service
+          mvn compile jib:build \
+              -Djib.container.environment=STATISTICS_SERVICE_PASSWORD=${{ env.STATISTICS-SERVICE-PASSWORD }} 
+
+          cd ../notification-service
+          mvn compile jib:build \
+              -Djib.container.environment=NOTIFICATION_SERVICE_PASSWORD=${{ env.NOTIFICATION-SERVICE-PASSWORD }} 
+
           echo 'Build complete'
-      
     
   deploy-to-aks:
     needs: build
@@ -56,5 +76,6 @@ jobs:
     # Deploy app using helm
     - name: Prep helm chart
       run: |
+          echo '${{ secrets.HELM_SECRET }}' > buildachart-piggy/templates/0-secrets.yaml
           helm upgrade initialdeployment buildachart-piggy
           echo 'Deploy complete'
