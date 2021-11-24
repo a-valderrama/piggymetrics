@@ -19,10 +19,8 @@ jobs:
                 kv/test test | TEST ;
       
         - run: |
-            echo 'Test 1'
-            echo 'steps.secrets.outputs.TEST'
             echo 'Test 2'
-            echo '${{ TEST }}'
+            echo ${{ TEST }}
             echo 'Test 3'
             echo $TEST
             echo 'Test 4'
