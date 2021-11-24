@@ -1,4 +1,4 @@
-name: Test the secrets from vault
+name: Test vault secrets
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
         - name: Import Secrets
           uses: hashicorp/vault-action@v2.3.1
           with:
-            url: https://52.143.251.183:8200
+            url: http://52.143.251.183:8200
             token: ${{ secrets.VaultToken }}
             caCertificate: ${{ secrets.VAULTCA }}
             secrets: |
