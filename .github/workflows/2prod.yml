@@ -34,7 +34,6 @@ jobs:
           secrets: |
               kv/azure user | USER ;
               kv/azure passwd | PASSWD ;
-              kv/azure acr | AZURE_CONTAINER_REGISTRY
               kv/piggy configPasswd | CONFIG_SERVICE_PASSWORD;
               kv/piggy notifPasswd | NOTIFICATION_SERVICE_PASSWORD;
               kv/piggy configPasswd | STATISTICS_SERVICE_PASSWORD;
