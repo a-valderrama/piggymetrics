@@ -48,7 +48,7 @@ jobs:
          export IMAGE_TAG=${{ env.IMAGE_TAG }}
          echo 'Install ACR AAD credential helper and login'
           curl -L https://aka.ms/acr/installaad/bash | /bin/bash
-          az acr login -n ${{ env.ACR }}
+          az acr login -n ${{ env.AZURE_CONTAINER_REGISTRY }}
           echo 'Start Build'
 
           cd config
@@ -87,7 +87,7 @@ jobs:
 
     # Stablish connection with AKS
     - run: |
-        az login -u ${{ env.AZURE_USER }} -p ${{ env.AZURE_PWD }}
+        az login -u ${{ env.USER }} -p ${{ env.PASSWD }}
         az aks get-credentials --name piggymetrics-aks1 --resource-group alejandro-valderrama --admin
     
     # Deploy app using helm
