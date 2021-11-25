@@ -2,10 +2,16 @@ name: Accept production updates
 
 # Controls when the workflow will run
 on:
-  # push:
-  #   branches: [ master ]
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
+
+# CONFIG_SERVICE_PASSWORD=password
+# NOTIFICATION_SERVICE_PASSWORD=password
+# STATISTICS_SERVICE_PASSWORD=password
+# ACCOUNT_SERVICE_PASSWORD=password
+# MONGODB_PASSWORD=password
 
 env:
   CONFIG_PORT: '8888'
@@ -24,19 +30,37 @@ jobs:
     environment: prod-secrets
     steps:
       - uses: actions/checkout@master
+
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2.3.1
+        with:
+          url: http://52.143.251.183:8200
+          token: ${{ secrets.VAULTTOKEN }}
+          caCertificate: ${{ secrets.VAULTCA }}
+          secrets: |
+              kv/azure user | USER ;
+              kv/azure passwd | PASSWD ;
+              kv/azure acr | AZURE_CONTAINER_REGISTRY
+              kv/piggy configPasswd | CONFIG_SERVICE_PASSWORD;
+              kv/piggy notifPasswd | NOTIFICATION_SERVICE_PASSWORD;
+              kv/piggy configPasswd | STATISTICS_SERVICE_PASSWORD;
+              kv/piggy accountPasswd | ACCOUNT_SERVICE_PASSWORD;
+              kv/piggy mongoPasswd | MONGO_DB_PASSWORD;
+              kv/helm secrets | HELM_SECRET;
+
     
       - run: |
-         az login -u ${{ secrets.AZURE_USER }} -p ${{ secrets.AZURE_PWD }}
-         export CONTAINER_REGISTRY=${{ secrets.AZURE_CONTAINER_REGISTRY }}
+         az login -u ${{ env.AZURE_USER }} -p ${{ env.AZURE_PWD }}
+         export CONTAINER_REGISTRY=${{ env.AZURE_CONTAINER_REGISTRY }}
          export IMAGE_TAG=${{ env.IMAGE_TAG }}
          echo 'Install ACR AAD credential helper and login'
           curl -L https://aka.ms/acr/installaad/bash | /bin/bash
-          az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY }}
+          az acr login -n ${{ env.ACR }}
           echo 'Start Build'
 
           cd config
           mvn compile jib:build \
-              -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ secrets.CONFIG_SERVICE_PASSWORD }}
+              -Djib.container.environment=CONFIG_SERVICE_PASSWORD=${{ env.CONFIG_SERVICE_PASSWORD }}
 
           cd ../registry
           mvn compile jib:build 
@@ -70,12 +94,12 @@ jobs:
 
     # Stablish connection with AKS
     - run: |
-        az login -u ${{ secrets.AZURE_USER }} -p ${{ secrets.AZURE_PWD }}
+        az login -u ${{ env.AZURE_USER }} -p ${{ env.AZURE_PWD }}
         az aks get-credentials --name piggymetrics-aks1 --resource-group alejandro-valderrama --admin
     
     # Deploy app using helm
     - name: Prep helm chart
       run: |
-          echo '${{ secrets.HELM_SECRET }}' > buildachart-piggy/templates/0-secrets.yaml
+          echo '${{ env.HELM_SECRET }}' > buildachart-piggy/templates/0-secrets.yaml
           helm upgrade initialdeploy buildachart-piggy
           echo 'Deploy complete'
