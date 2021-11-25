@@ -40,7 +40,6 @@ jobs:
               kv/piggy configPasswd | STATISTICS_SERVICE_PASSWORD;
               kv/piggy accountPasswd | ACCOUNT_SERVICE_PASSWORD;
               kv/piggy mongoPasswd | MONGO_DB_PASSWORD;
-              kv/helm secrets | HELM_SECRET;
     
       - run: |
          az login -u ${{ env.USER }} -p ${{ env.PASSWD }}
@@ -84,6 +83,16 @@ jobs:
     environment: prod-secrets
     steps:
     - uses: actions/checkout@master
+    - name: Import Secrets
+      uses: hashicorp/vault-action@v2.3.1
+      with:
+        url: http://52.143.251.183:8200
+        token: ${{ secrets.VAULTTOKEN }}
+        caCertificate: ${{ secrets.VAULTCA }}
+        secrets: |
+            kv/azure user | USER ;
+            kv/azure passwd | PASSWD ;
+            kv/helm secrets | HELM_SECRET;
 
     # Stablish connection with AKS
     - run: |
