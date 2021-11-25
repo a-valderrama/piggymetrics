@@ -24,7 +24,7 @@ env:
   IMAGE_TAG: ga-${{ github.sha }} 
 
 jobs:
-  # Build pods imgs
+  # Build pods imgs with vault secrets
   build:
     runs-on: ubuntu-latest
     environment: prod-secrets
@@ -47,7 +47,6 @@ jobs:
               kv/piggy accountPasswd | ACCOUNT_SERVICE_PASSWORD;
               kv/piggy mongoPasswd | MONGO_DB_PASSWORD;
               kv/helm secrets | HELM_SECRET;
-
     
       - run: |
          az login -u ${{ env.AZURE_USER }} -p ${{ env.AZURE_PWD }}
