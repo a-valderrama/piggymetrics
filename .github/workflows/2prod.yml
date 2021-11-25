@@ -29,7 +29,9 @@ jobs:
         uses: hashicorp/vault-action@v2.3.1
         with:
           url: http://52.143.251.183:8200
-          token: ${{ secrets.VAULTTOKEN }}
+          method: approle
+          roleId: ${{ secrets.roleId }}
+          secretId: ${{ secrets.secretId }}
           caCertificate: ${{ secrets.VAULTCA }}
           secrets: |
               kv/azure user | USER ;
@@ -87,7 +89,9 @@ jobs:
       uses: hashicorp/vault-action@v2.3.1
       with:
         url: http://52.143.251.183:8200
-        token: ${{ secrets.VAULTTOKEN }}
+        method: approle
+        roleId: ${{ secrets.roleId }}
+        secretId: ${{ secrets.secretId }}
         caCertificate: ${{ secrets.VAULTCA }}
         secrets: |
             kv/azure user | USER ;
