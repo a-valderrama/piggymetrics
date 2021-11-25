@@ -7,12 +7,6 @@ on:
   pull_request:
     branches: [ master ]
 
-# CONFIG_SERVICE_PASSWORD=password
-# NOTIFICATION_SERVICE_PASSWORD=password
-# STATISTICS_SERVICE_PASSWORD=password
-# ACCOUNT_SERVICE_PASSWORD=password
-# MONGODB_PASSWORD=password
-
 env:
   CONFIG_PORT: '8888'
   REGISTRY_PORT: '8761'
