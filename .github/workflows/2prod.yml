@@ -34,6 +34,7 @@ jobs:
           secrets: |
               kv/azure user | USER ;
               kv/azure passwd | PASSWD ;
+              kv/azure acr | AZURE_CONTAINER_REGISTRY
               kv/piggy configPasswd | CONFIG_SERVICE_PASSWORD;
               kv/piggy notifPasswd | NOTIFICATION_SERVICE_PASSWORD;
               kv/piggy configPasswd | STATISTICS_SERVICE_PASSWORD;
@@ -42,7 +43,7 @@ jobs:
               kv/helm secrets | HELM_SECRET;
     
       - run: |
-         az login -u ${{ env.AZURE_USER }} -p ${{ env.AZURE_PWD }}
+         az login -u ${{ env.USER }} -p ${{ env.PASSWD }}
          export CONTAINER_REGISTRY=${{ env.AZURE_CONTAINER_REGISTRY }}
          export IMAGE_TAG=${{ env.IMAGE_TAG }}
          echo 'Install ACR AAD credential helper and login'
