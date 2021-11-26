@@ -112,6 +112,32 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>1.8.0</version>
+				<configuration>
+					<from>
+						<image>mcr.microsoft.com/java/jre-headless:8u232-zulu-alpine</image>
+					</from>
+					<to>
+						<image>containerregistrypiggy.azurecr.io/piggymetrics-notificationservice:prod</image>
+					</to>
+					<container>
+						<jvmFlags>
+							<jvmFlag>-Xms2048m</jvmFlag>
+							<jvmFlag>-Xmx2048m</jvmFlag>
+						</jvmFlags>
+						<ports>
+							<port>8000</port>
+						</ports>
+						<labels>
+							<key1>${project.version}</key1>
+						</labels>
+					</container>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
