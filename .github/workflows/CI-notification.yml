@@ -27,7 +27,7 @@ jobs:
           ref: dev
 
       - name: Try to test new integration
+        # mvn tests
         run: |
           cd notification-service/
           mvn compile 
-          mvn test
