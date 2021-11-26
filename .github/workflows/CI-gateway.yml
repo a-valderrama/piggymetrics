@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI - Allow new features from gateway
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - dev 
+    paths:
+      - 'gateway/**'
+  pull_request:
+    branches:
+      - dev 
+    paths:
+      - 'gateway/**'
+    
+jobs:
+  gateway-test:
+    runs-on: ubuntu-latest
+    environment: dev-secrets
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 10
+          ref: dev
+
+      - name: Try to test new integration
+        run: |
+          cd gateway/
+          mvn compile 
+          mvn test
