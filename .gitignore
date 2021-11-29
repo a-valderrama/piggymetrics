@@ -17,3 +17,6 @@ target/
 
 # Init script
 buildNdeploy.sh
+
+# Init infra
+terraform/
