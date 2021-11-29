@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI - Allow new features from auth service
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - dev 
+    paths:
+      - 'auth-service/**'
+  pull_request:
+    branches:
+      - dev 
+    paths:
+      - 'auth-service/**'
+    
+jobs:
+  auth-test:
+    runs-on: ubuntu-latest
+    environment: dev-secrets
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 10
+          ref: dev
+
+      - name: Try to test new integration
+        # mvn test
+        run: |
+          cd auth-service/
+          mvn compile 
