@@ -20,4 +20,4 @@ Deploy a microservices app called [Piggymetrics](https://github.com/sqshq/piggym
 - [Github actions](https://github.com/features/actions)
 
 
-Overall presentation can be found [here](https://github.com/a-valderrama/piggymetrics/blob/master/Proj-Slides.pdf)
+Overall presentation can be found [here](https://github.com/a-valderrama/piggymetrics/blob/master/Proj-Slides.pptx)
